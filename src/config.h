@@ -1,0 +1,1 @@
+/home/benmills/dwm/config.h
