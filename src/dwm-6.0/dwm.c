@@ -178,7 +178,7 @@ static void die(const char *errstr, ...);
 static Monitor *dirtomon(int dir);
 static void drawbar(Monitor *m);
 static void drawbars(void);
-static void drawsquare(Bool filled, Bool empty, Bool invert, XftColor col[ColLast]);
+static void drawsquare(const char *text, Bool filled, Bool empty, Bool invert, XftColor col[ColLast]);
 static void drawtext(const char *text, XftColor col[ColLast], Bool invert);
 static void enternotify(XEvent *e);
 static void expose(XEvent *e);
@@ -728,7 +728,7 @@ drawbar(Monitor *m) {
 		dc.w = TEXTW(tags[i]);
 		col = m->tagset[m->seltags] & 1 << i ? dc.sel : dc.norm;
 		drawtext(tags[i], col, urg & 1 << i);
-		drawsquare(m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
+		drawsquare(tags[i], m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
 		           occ & 1 << i, urg & 1 << i, col);
 		dc.x += dc.w;
 	}
@@ -752,7 +752,7 @@ drawbar(Monitor *m) {
 		if(m->sel) {
 			col = m == selmon ? dc.sel : dc.norm;
 			drawtext(m->sel->name, col, False);
-			drawsquare(m->sel->isfixed, m->sel->isfloating, False, col);
+			drawsquare(m->sel->name, m->sel->isfixed, m->sel->isfloating, False, col);
 		}
 		else
 			drawtext(NULL, dc.norm, False);
@@ -770,16 +770,17 @@ drawbars(void) {
 }
 
 void
-drawsquare(Bool filled, Bool empty, Bool invert, XftColor col[ColLast]) {
+drawsquare(const char *text, Bool filled, Bool empty, Bool invert, XftColor col[ColLast]) {
 	int x;
+  int w = (TEXTW(text)) - 13;
 
 	XSetForeground(dpy, dc.gc, col[invert ? ColBG : ColFG].pixel);
 	x = (dc.font.ascent + dc.font.descent + 2) / 4;
 	if(filled)
-		XFillRectangle(dpy, dc.drawable, dc.gc, dc.x+4, dc.y+(dc.font.descent+dc.font.ascent), x+8, 1);
+		XFillRectangle(dpy, dc.drawable, dc.gc, dc.x+6, dc.y+(dc.font.descent+dc.font.ascent), w, 1);
 	else if(empty)
 		/* XDrawRectangle(dpy, dc.drawable, dc.gc, dc.x+1, dc.y+1, x, x); */
-		XFillRectangle(dpy, dc.drawable, dc.gc, dc.x+4, dc.y+(dc.font.descent+dc.font.ascent), x+8, 1);
+		XFillRectangle(dpy, dc.drawable, dc.gc, dc.x+6, dc.y+(dc.font.descent+dc.font.ascent), w, 1);
 }
 
 void

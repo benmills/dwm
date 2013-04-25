@@ -1,1 +1,1 @@
-/home/benmills/dwm/config.h
+/home/benmills/code/dwm/config.h

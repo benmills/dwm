@@ -29,12 +29,10 @@ static const char colors[NUMCOLORS][ColLast][9] = {
 };
 
 /* tagging */
-static const char *tags[] = { "term", "web", "comm", "notes", "media", "documents", "other" };
+static const char *tags[] = { "t", "w", "c", "4", "5", "6", "7" };
 
 static const Rule rules[] = {
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            True,        -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       False,       -1 },
+  { "Zathura",  NULL,       NULL,       1 << 5,       False,       -1 }
 };
 
 /* layout(s) */
@@ -44,9 +42,9 @@ static const Bool resizehints = False; /* True means respect size hints in tiled
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ "[M]",      monocle },
+	{ "[titled]",      tile },    /* first entry is default */
+	{ "[floating]",      NULL },    /* no layout function means floating behavior */
+	{ "[monocle]",      monocle },
 };
 
 /* key definitions */
@@ -64,12 +62,11 @@ static const Layout layouts[] = {
 static const char *dmenucmd[] = { "dmenu_ask", NULL };
 static const char *termcmd[]  = { "urxvtc", "-title", "terminal", NULL };
 static const char *lockcmd[]  = { "slock", NULL };
-static const char *webcmd[]  = { "google-chrome", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY|ShiftMask,             XK_l,      spawn,          {.v = lockcmd } },
-	{ MODKEY|ControlMask,           XK_w,      spawn,          {.v = webcmd } },
+	{ MODKEY|ControlMask,           XK_l,      spawn,          {.v = lockcmd } },
 	{ MODKEY|ControlMask,           XK_t,      spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 
@@ -94,21 +91,20 @@ static Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
+
 	TAGKEYS(                        XK_4,                      3)
 	TAGKEYS(                        XK_5,                      4)
-
 	TAGKEYS(                        XK_6,                      5)
 	TAGKEYS(                        XK_7,                      6)
-	TAGKEYS(                        XK_8,                      7)
-	TAGKEYS(                        XK_9,                      8)
 
-	TAGKEYS(                        XK_q,                      5)
-	TAGKEYS(                        XK_w,                      6)
-	TAGKEYS(                        XK_e,                      7)
-	TAGKEYS(                        XK_r,                      8)
+	TAGKEYS(                        XK_q,                      3)
+	TAGKEYS(                        XK_w,                      4)
+	TAGKEYS(                        XK_e,                      5)
+	TAGKEYS(                        XK_r,                      6)
 
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 };
